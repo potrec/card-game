@@ -14,7 +14,7 @@ public class DeckManager : MonoBehaviour
     
     public CardSO currentCard { get; set; } = null;
     
-    [SerializeField] private Transform basicCardPrefab;
+    public Transform basicCardPrefab;
     [SerializeField] private Transform deckUI;
     
     public Transform handUI;
