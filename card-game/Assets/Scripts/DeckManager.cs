@@ -6,21 +6,19 @@ using UnityEngine.Serialization;
 public class DeckManager : MonoBehaviour
 {
     public static DeckManager Instance { get; private set; }
-    
+
+    [Header("Deck Settings")]
+    public int startingHandDeckSize = 3;
     public List<CardSO> deckCards;
-    public List<CardSO> handCards;
-    public List<CardSO> tableCards;
-    public List<CardSO> discardPile;
+    public List<CardSO> handCards = new List<CardSO>();
+    public List<CardSO> tableCards = new List<CardSO>();
+    public List<CardSO> discardPile = new List<CardSO>();
     
     public CardSO currentCard { get; set; } = null;
     
     public Transform basicCardPrefab;
-    [SerializeField] private Transform deckUI;
-    
+    public Transform tableUI;
     public Transform handUI;
-
-    public float cardRotationInDeck = 2.5f;
-
 
     private void Awake()
     {
@@ -29,31 +27,62 @@ public class DeckManager : MonoBehaviour
 
     private void Start()
     {
-        UpdateVisuals();
+        InitializeDeck();
     }
-    
+
+    public void InitializeDeck()
+    {
+        ShuffleDeck();
+        DrawInitialHand();
+        UpdateHandVisuals();
+    }
+
     private void ShuffleDeck()
     {
+        for (int i = 0; i < deckCards.Count; i++)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, deckCards.Count);
+            (deckCards[randomIndex], deckCards[i]) = (deckCards[i], deckCards[randomIndex]);
+        }
+    }
+
+    public void DrawInitialHand()
+    {
+        for (int i = 0; i < startingHandDeckSize; i++)
+        {
+            DrawCard();
+        }
+    }
+
+    public void DrawCard()
+    {
+        if(deckCards.Count == 0) return;
         
+        var card = deckCards[0];
+        deckCards.RemoveAt(0);
+        handCards.Add(card);
+        InstantiateCard(card, handUI);
     }
     
-    public void UpdateVisuals()
+    private void InstantiateCard(CardSO cardData, Transform parent)
     {
-        foreach (Transform child in deckUI)
+        var card = Instantiate(basicCardPrefab, parent);
+        var cardScript = card.GetComponent<BasicCard>();
+        
+        cardScript.cardData = cardData;
+        cardScript.Initialize();
+    }
+
+    public void UpdateHandVisuals()
+    {
+        foreach (Transform child in handUI)
         {
-            // if (child == basicCardPrefab) continue;
             Destroy(child.gameObject);
         }
         
-        float cardRotation = cardRotationInDeck * (handCards.Count-1)/2;
         for (int i = 0; i < handCards.Count; i++)
         {
-            var card = Instantiate(basicCardPrefab, deckUI);
-            var cardScript = card.GetComponent<BasicCard>();
-            
-            cardScript.cardData = handCards[i];
-            cardScript.Initialize();
-            card.localRotation = Quaternion.Euler(0, 0, cardRotation-i*cardRotationInDeck);
+            InstantiateCard(handCards[i], handUI);
         }
     }
 

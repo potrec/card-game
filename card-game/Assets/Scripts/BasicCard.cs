@@ -33,6 +33,6 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         DeckManager.Instance.tableCards.Add(cardData);
         transform.SetParent(DeckManager.Instance.handUI);
         DeckManager.Instance.currentCard = null;
-        DeckManager.Instance.UpdateVisuals();
+        DeckManager.Instance.UpdateHandVisuals();
     }
 }
