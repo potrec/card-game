@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -6,6 +7,8 @@ public class GameManager : MonoBehaviour
     private int playerTurn = 1;
     public int currentMana { get; private set; }
     public int maxMana { get; private set; }
+    
+    public TextMeshProUGUI manaText; 
 
     private void Awake()
     {
@@ -16,6 +19,7 @@ public class GameManager : MonoBehaviour
     {
         maxMana = 1;
         currentMana = maxMana;
+        SetManaText();
     }
     
     public bool CanSpendMana(int manaCost)
@@ -33,5 +37,13 @@ public class GameManager : MonoBehaviour
         playerTurn += 1;
         maxMana = maxMana < 10 ? maxMana + 1 : 10;
         currentMana = maxMana;
+        DeckManager.Instance.EndTurn();
+        manaText.text = currentMana + "/" + maxMana;
+        SetManaText();
+    }
+    
+    public void SetManaText()
+    {
+        manaText.text = currentMana + "/" + maxMana;
     }
 }

@@ -48,7 +48,12 @@ public class DeckManager : MonoBehaviour
 
     public void DrawInitialHand()
     {
-        for (int i = 0; i < startingHandDeckSize; i++)
+        DrawCards(startingHandDeckSize);
+    }
+    
+    public void DrawCards(int amount)
+    {
+        for (int i = 0; i < amount; i++)
         {
             DrawCard();
         }
@@ -91,5 +96,18 @@ public class DeckManager : MonoBehaviour
         handCards.Remove(card.cardData);
         tableCards.Add(card.cardData);
         card.transform.SetParent(tableUI);
+    }
+    
+    public void EndTurn()
+    {
+        discardPile.AddRange(tableCards);
+        tableCards.Clear();
+
+        foreach (Transform child in tableUI)
+        {
+            Destroy(child.gameObject);
+        }
+        
+        DrawCards(startingHandDeckSize-handCards.Count);
     }
 }
