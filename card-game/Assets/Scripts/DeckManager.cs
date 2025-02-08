@@ -96,6 +96,7 @@ public class DeckManager : MonoBehaviour
         handCards.Remove(card.cardData);
         tableCards.Add(card.cardData);
         card.transform.SetParent(tableUI);
+        
     }
     
     public void EndTurn()

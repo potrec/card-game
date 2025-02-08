@@ -8,8 +8,9 @@ public class GameManager : MonoBehaviour
     public int currentMana { get; private set; }
     public int maxMana { get; private set; }
     
-    public TextMeshProUGUI manaText; 
-
+    public TextMeshProUGUI manaText;
+    public TextMeshProUGUI turnText;
+    
     private void Awake()
     {
         Instance = this;
@@ -19,6 +20,7 @@ public class GameManager : MonoBehaviour
     {
         maxMana = 1;
         currentMana = maxMana;
+        turnText.text = $"{playerTurn}";
         SetManaText();
     }
     
@@ -26,15 +28,21 @@ public class GameManager : MonoBehaviour
     {
         if (currentMana >= manaCost)
         {
-            currentMana -= manaCost;
             return true;
         }
         return false;
     }
     
+    public void SpendMana(int manaCost)
+    {
+        currentMana -= manaCost;
+        SetManaText();
+    }
+    
     public void EndTurn()
     {
         playerTurn += 1;
+        turnText.text = $"{playerTurn}";
         maxMana = maxMana < 10 ? maxMana + 1 : 10;
         currentMana = maxMana;
         DeckManager.Instance.EndTurn();
