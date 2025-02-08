@@ -3025,22 +3025,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c999b732094feb44093ecd8be36290fd, type: 2}
   - {fileID: 11400000, guid: c999b732094feb44093ecd8be36290fd, type: 2}
   - {fileID: 11400000, guid: c999b732094feb44093ecd8be36290fd, type: 2}
-  - {fileID: 11400000, guid: c999b732094feb44093ecd8be36290fd, type: 2}
-  - {fileID: 11400000, guid: c999b732094feb44093ecd8be36290fd, type: 2}
-  - {fileID: 11400000, guid: c999b732094feb44093ecd8be36290fd, type: 2}
-  - {fileID: 11400000, guid: c999b732094feb44093ecd8be36290fd, type: 2}
-  - {fileID: 11400000, guid: c999b732094feb44093ecd8be36290fd, type: 2}
-  - {fileID: 11400000, guid: c999b732094feb44093ecd8be36290fd, type: 2}
-  - {fileID: 11400000, guid: c999b732094feb44093ecd8be36290fd, type: 2}
-  - {fileID: 11400000, guid: c999b732094feb44093ecd8be36290fd, type: 2}
-  - {fileID: 11400000, guid: c999b732094feb44093ecd8be36290fd, type: 2}
+  - {fileID: 11400000, guid: 0ad39319de1abd2459b02353dc10f5b0, type: 2}
+  - {fileID: 11400000, guid: 0ad39319de1abd2459b02353dc10f5b0, type: 2}
+  - {fileID: 11400000, guid: 0ad39319de1abd2459b02353dc10f5b0, type: 2}
   handCards: []
   tableCards: []
   discardPile: []
   basicCardPrefab: {fileID: 1948492481979100194, guid: 0abf9aef4cb22c240985aa1fd0b88446, type: 3}
   tableUI: {fileID: 582337831}
   handUI: {fileID: 981031888}
-  cardRotationInDeck: 2.5
 --- !u!1 &1563170350
 GameObject:
   m_ObjectHideFlags: 0

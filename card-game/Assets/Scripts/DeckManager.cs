@@ -86,4 +86,10 @@ public class DeckManager : MonoBehaviour
         }
     }
 
+    public void PlayCard(BasicCard card)
+    {
+        handCards.Remove(card.cardData);
+        tableCards.Add(card.cardData);
+        card.transform.SetParent(tableUI);
+    }
 }
