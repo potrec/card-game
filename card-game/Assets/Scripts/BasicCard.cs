@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -37,12 +38,12 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         if(eventData.pointerCurrentRaycast.gameObject != null && eventData.pointerCurrentRaycast.gameObject.GetComponent<DropZone>() != null)
         {
             PlayCard();
+            DeckManager.Instance.UpdateHandVisuals();
         }
         else
         {
             ReturnToHand();
         }
-        DeckManager.Instance.UpdateHandVisuals();
     }
 
     public void PlayCard()
@@ -60,6 +61,6 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void ReturnToHand()
     {
-        transform.localPosition = initialPosition;
+        transform.DOLocalMove(initialPosition, 0.5f);
     }
 }
