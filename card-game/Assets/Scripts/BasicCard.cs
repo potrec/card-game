@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public CardSO cardData;
-    private Transform parentAfterDrag;
     private Vector3 initialPosition;
     private CanvasGroup canvasGroup;
 
@@ -22,26 +21,27 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public void OnBeginDrag(PointerEventData eventData)
     {
         canvasGroup.blocksRaycasts = false;
-        parentAfterDrag = transform.parent;
         initialPosition = transform.localPosition;
-        transform.SetParent(transform.root);
-        transform.SetAsLastSibling();
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        transform.position = Input.mousePosition;
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z = 1f;
+        transform.position = mousePos;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         canvasGroup.blocksRaycasts = true;
-        if (transform.parent == parentAfterDrag.root)
+        if(eventData.pointerCurrentRaycast.gameObject != null && eventData.pointerCurrentRaycast.gameObject.GetComponent<DropZone>() != null)
         {
-            Debug.Log("Dropped outside of parent");
+            PlayCard();
+        }
+        else
+        {
             ReturnToHand();
         }
-        Debug.Log("Dropped on parent");
         DeckManager.Instance.UpdateHandVisuals();
     }
 
@@ -60,7 +60,6 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void ReturnToHand()
     {
-        transform.SetParent(parentAfterDrag);
         transform.localPosition = initialPosition;
     }
 }

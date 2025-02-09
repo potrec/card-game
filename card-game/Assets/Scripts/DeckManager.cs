@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using DG.Tweening;
 
 public class DeckManager : MonoBehaviour
 {
@@ -96,7 +97,6 @@ public class DeckManager : MonoBehaviour
         handCards.Remove(card.cardData);
         tableCards.Add(card.cardData);
         card.transform.SetParent(tableUI);
-        
     }
     
     public void EndTurn()
