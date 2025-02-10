@@ -11,8 +11,8 @@ public class DeckManager : MonoBehaviour
     [Header("Deck Settings")]
     public int startingHandDeckSize = 3;
     public List<CardSO> deckCards;
-    public List<CardSO> handCards = new List<CardSO>();
-    public List<CardSO> tableCards = new List<CardSO>();
+    public List<Transform> handCards = new List<Transform>();
+    public List<Transform> tableCards = new List<Transform>();
     public List<CardSO> discardPile = new List<CardSO>();
     
     public CardSO currentCard { get; set; } = null;
@@ -35,7 +35,7 @@ public class DeckManager : MonoBehaviour
     {
         ShuffleDeck();
         DrawInitialHand();
-        UpdateHandVisuals();
+        UpdateHandCards();
     }
 
     private void ShuffleDeck()
@@ -64,44 +64,46 @@ public class DeckManager : MonoBehaviour
     {
         if(deckCards.Count == 0) return;
         
-        var card = deckCards[0];
+        CardSO deckCardSO = deckCards[0];
         deckCards.RemoveAt(0);
+        Transform card = InstantiateCard(deckCardSO, handUI);
         handCards.Add(card);
-        InstantiateCard(card, handUI);
     }
     
-    private void InstantiateCard(CardSO cardData, Transform parent)
+    private Transform InstantiateCard(CardSO cardData, Transform parent)
     {
         var card = Instantiate(basicCardPrefab, parent);
         var cardScript = card.GetComponent<BasicCard>();
         
         cardScript.cardData = cardData;
         cardScript.Initialize();
+        return card;
     }
 
-    public void UpdateHandVisuals()
+    public void UpdateHandCards()
     {
         foreach (Transform child in handUI)
         {
-            Destroy(child.gameObject);
-        }
-        
-        for (int i = 0; i < handCards.Count; i++)
-        {
-            InstantiateCard(handCards[i], handUI);
+            var card = child.GetComponent<BasicCard>();
+            if (card == null)
+            {
+                Destroy(child);
+                continue;
+            }
+            card.UpdateInitialTransform();
         }
     }
 
-    public void PlayCard(BasicCard card)
+    public void PlayCard(Transform card)
     {
-        handCards.Remove(card.cardData);
-        tableCards.Add(card.cardData);
+        handCards.Remove(card);
+        tableCards.Add(card);
         card.transform.SetParent(tableUI);
     }
     
     public void EndTurn()
     {
-        discardPile.AddRange(tableCards);
+        // discardPile.AddRange(tableCards);
         tableCards.Clear();
 
         foreach (Transform child in tableUI)
@@ -110,5 +112,6 @@ public class DeckManager : MonoBehaviour
         }
         
         DrawCards(startingHandDeckSize-handCards.Count);
+        UpdateHandCards();
     }
 }
