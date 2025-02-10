@@ -10,7 +10,7 @@ public class DeckManager : MonoBehaviour
 
     [Header("Deck Settings")]
     public int startingHandDeckSize = 3;
-    public List<CardSO> deckCards;
+    public DeckSO deckSO;
     public List<Transform> handCards = new List<Transform>();
     public List<Transform> tableCards = new List<Transform>();
     public List<CardSO> discardPile = new List<CardSO>();
@@ -20,6 +20,8 @@ public class DeckManager : MonoBehaviour
     public Transform basicCardPrefab;
     public Transform tableUI;
     public Transform handUI;
+
+    public List<DeckSO.DeckCards> deckCards;
 
     private void Awake()
     {
@@ -33,18 +35,15 @@ public class DeckManager : MonoBehaviour
 
     public void InitializeDeck()
     {
-        ShuffleDeck();
+        deckCards = new List<DeckSO.DeckCards>();
+        
+        foreach (var deckCard in deckSO.deckCards)
+        {
+            deckCards.Add(new DeckSO.DeckCards(deckCard.card, deckCard.amount));
+        }
+        
         DrawInitialHand();
         UpdateHandCards();
-    }
-
-    private void ShuffleDeck()
-    {
-        for (int i = 0; i < deckCards.Count; i++)
-        {
-            int randomIndex = UnityEngine.Random.Range(0, deckCards.Count);
-            (deckCards[randomIndex], deckCards[i]) = (deckCards[i], deckCards[randomIndex]);
-        }
     }
 
     public void DrawInitialHand()
@@ -62,11 +61,17 @@ public class DeckManager : MonoBehaviour
 
     public void DrawCard()
     {
-        if(deckCards.Count == 0) return;
+        if (deckCards.Count == 0) return;
         
-        CardSO deckCardSO = deckCards[0];
-        deckCards.RemoveAt(0);
-        Transform card = InstantiateCard(deckCardSO, handUI);
+        int randomCardIndex = UnityEngine.Random.Range(0, deckCards.Count);
+        var cardData = deckCards[randomCardIndex].card;
+        deckCards[randomCardIndex].amount--;
+        if (deckCards[randomCardIndex].amount == 0)
+        {
+            deckCards.RemoveAt(randomCardIndex);
+        }
+        
+        var card = InstantiateCard(cardData, handUI);
         handCards.Add(card);
     }
     
