@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -17,6 +18,7 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public CardSO cardData;
     public CardState cardState = CardState.InHand;
     public BasicCardVisual cardVisual;
+    [HideInInspector] public Vector3 initialPosition;
     
     private CanvasGroup canvasGroup;
     private Vector3 initialScale;
@@ -31,7 +33,7 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     IEnumerator CoWaitForEndOfFrame()
     {
         yield return new WaitForEndOfFrame();
-        cardVisual.initialPosition = GetComponent<RectTransform>().localPosition;
+        initialPosition = GetComponent<RectTransform>().localPosition;
     }
 
     public void UpdateInitialTransform()
@@ -68,15 +70,18 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         {
             if (GameManager.Instance.CanSpendMana(cardData.manaCost))
             {
+                Debug.Log($"Card {cardData.name} played");
                 PlayCard();
             }
             else
             {
+                Debug.Log($"Card {cardData.name} played but not enough mana");
                 cardState = CardState.InHand;
             }
         }
         else
         {
+            Debug.Log($"Card {cardData.name} returned to hand");
             cardState = CardState.InHand;
         }
     }

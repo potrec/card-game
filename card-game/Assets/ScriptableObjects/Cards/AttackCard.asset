@@ -16,4 +16,4 @@ MonoBehaviour:
   cardName: Attack
   description: Chosen Mystling Attacks.
   cardImage: {fileID: -1463734846, guid: 30d6af0f203c0ee47b50e94aa29d8362, type: 3}
-  manaCost: 7
+  manaCost: 1

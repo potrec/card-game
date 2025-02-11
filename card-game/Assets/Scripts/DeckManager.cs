@@ -78,6 +78,7 @@ public class DeckManager : MonoBehaviour
     private Transform InstantiateCard(CardSO cardData, Transform parent)
     {
         var card = Instantiate(basicCardPrefab, parent);
+        card.gameObject.name = cardData.name;
         var cardScript = card.GetComponent<BasicCard>();
         
         cardScript.cardData = cardData;
@@ -87,6 +88,7 @@ public class DeckManager : MonoBehaviour
 
     public void UpdateHandCards()
     {
+        Debug.Log("Updating hand cards");
         foreach (Transform child in handUI)
         {
             var card = child.GetComponent<BasicCard>();

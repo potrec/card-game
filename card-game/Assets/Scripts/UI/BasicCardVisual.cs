@@ -7,7 +7,7 @@ public class BasicCardVisual : MonoBehaviour
 {
     private RectTransform rectTransform;
     private Vector3 initialScale;
-    public Vector3 initialPosition;
+    private BasicCard card;
     
     private const float HoverScaleFactor = 1.1f;
     private const float HoverAnimationDuration = 0.1f;
@@ -18,6 +18,7 @@ public class BasicCardVisual : MonoBehaviour
     {
         rectTransform = GetComponent<RectTransform>();
         initialScale = rectTransform.localScale;
+        card = GetComponentInParent<BasicCard>();
     }
 
     public void InitializeVisual(CardSO cardData)
@@ -30,12 +31,12 @@ public class BasicCardVisual : MonoBehaviour
         Vector3 scale = initialScale;
         Vector3 move = new Vector3(0, HoverMoveUpDistance, 0);
         transform.DOScale(scale * HoverScaleFactor, HoverAnimationDuration);
-        transform.parent.DOLocalMove(initialPosition + move, HoverAnimationDuration);
+        transform.parent.DOLocalMove(card.initialPosition + move, HoverAnimationDuration);
     }
 
     public void ResetHoverEffect()
     {
         transform.DOScale(initialScale, ExitHoverAnimationDuration);
-        transform.parent.DOLocalMove(initialPosition, ExitHoverAnimationDuration);
+        transform.parent.DOLocalMove(card.initialPosition, ExitHoverAnimationDuration);
     }
 }
