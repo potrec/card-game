@@ -1877,7 +1877,6 @@ GameObject:
   m_Component:
   - component: {fileID: 839792039}
   - component: {fileID: 839792040}
-  - component: {fileID: 839792041}
   m_Layer: 5
   m_Name: HandCardsHorizontalLayout
   m_TagString: Untagged
@@ -1902,7 +1901,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -1267.2, y: -270}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &839792040
 MonoBehaviour:
@@ -1913,7 +1912,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 839792038}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
@@ -1922,28 +1921,12 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 0
-  m_ChildForceExpandHeight: 0
-  m_ChildControlWidth: 1
-  m_ChildControlHeight: 1
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
---- !u!114 &839792041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 839792038}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 2
-  m_VerticalFit: 2
+  m_StartCorner: 2
+  m_StartAxis: 1
+  m_CellSize: {x: 160, y: 266.6666}
+  m_Spacing: {x: 10, y: 0}
+  m_Constraint: 2
+  m_ConstraintCount: 1
 --- !u!1 &922304637
 GameObject:
   m_ObjectHideFlags: 0
@@ -2030,6 +2013,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 981031888}
+  - component: {fileID: 981031889}
   m_Layer: 5
   m_Name: HandUI
   m_TagString: Untagged
@@ -2058,6 +2042,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &981031889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981031887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d83685caaad9994cb641150c7c71cee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridLayoutGroup: {fileID: 839792040}
 --- !u!1 &988342485
 GameObject:
   m_ObjectHideFlags: 0
@@ -3192,7 +3189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardsGrid: {fileID: 1192463210}
-  deckCardsTemplate: {fileID: 0}
+  deckCardsTemplate: {fileID: 1948492481979100194, guid: 3df926afaccd38b408f7777b60df3771, type: 3}
 --- !u!1 &1343680633
 GameObject:
   m_ObjectHideFlags: 0
@@ -3646,8 +3643,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d842ee19cf73ba44bbf88bd2cf351102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHandDeckSize: 3
-  deckSO: {fileID: 11400000, guid: f6a3d0a3d8c906b48b8fb84872341048, type: 2}
+  startingHandDeckSize: 6
+  deckSO: {fileID: 11400000, guid: 9f349e5d535d27f4abc99882c54467d4, type: 2}
   handCards: []
   tableCards: []
   discardPile: []

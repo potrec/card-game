@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceec80abddb47264e814705556cc50b8, type: 3}
+  m_Name: SubZeroCard
+  m_EditorClassIdentifier: 
+  cardID: 3
+  cardName: Sub-zero
+  description: Stun a chosen enemy
+  cardImage: {fileID: 355754459, guid: 23dc62644b0a3b44a91cf1466cdbfa8b, type: 3}
+  manaCost: 1
