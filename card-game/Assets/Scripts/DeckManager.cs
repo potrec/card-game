@@ -108,7 +108,7 @@ public class DeckManager : MonoBehaviour
     
     public void EndTurn()
     {
-        // discardPile.AddRange(tableCards);
+        discardPile.AddRange(tableCards.ConvertAll(c => c.GetComponent<BasicCard>().cardData));
         tableCards.Clear();
 
         foreach (Transform child in tableUI)

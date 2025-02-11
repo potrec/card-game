@@ -1,9 +1,6 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using DG.Tweening;
 
 public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
@@ -11,27 +8,30 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     {
         InHand,
         Dragging,
-        OnTable
-    }   
+        OnTable,
+        Discarded
+    }
+    
+    public static bool IsDraggingCard { get; private set; }
+    
     public CardSO cardData;
-    private Vector3 initialPosition;
+    public CardState cardState = CardState.InHand;
+    public BasicCardVisual cardVisual;
+    
     private CanvasGroup canvasGroup;
     private Vector3 initialScale;
     private RectTransform rectTransform;
-    public CardState cardState = CardState.InHand;
     
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
-        rectTransform = GetComponent<RectTransform>();
-        initialScale = rectTransform.localScale;
         UpdateInitialTransform();
     }
     
     IEnumerator CoWaitForEndOfFrame()
     {
         yield return new WaitForEndOfFrame();
-        initialPosition = rectTransform.localPosition;
+        cardVisual.initialPosition = GetComponent<RectTransform>().localPosition;
     }
 
     public void UpdateInitialTransform()
@@ -40,18 +40,20 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     }
 
     public void Initialize() {
-        GetComponent<Image>().sprite = cardData.cardImage;
+        cardVisual.InitializeVisual(cardData);
     }
     
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (cardState == CardState.OnTable || cardState == CardState.Discarded) return;
         cardState = CardState.Dragging;
         canvasGroup.blocksRaycasts = false;
+        IsDraggingCard = true;
     }
-
-    //todo: jak trzymasz kartę i najedziesz na inną kartę to w tej karcie na którą najechałeś włącza się animacja w OnPointerEnter i OnPointerExit
+    
     public void OnDrag(PointerEventData eventData)
     {
+        if (cardState == CardState.OnTable || cardState == CardState.Discarded) return;
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = 1f;
         transform.position = mousePos;
@@ -59,7 +61,9 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (cardState == CardState.OnTable || cardState == CardState.Discarded) return;
         canvasGroup.blocksRaycasts = true;
+        IsDraggingCard = false;
         if(eventData.pointerCurrentRaycast.gameObject != null && eventData.pointerCurrentRaycast.gameObject.GetComponent<DropZone>() != null)
         {
             if (GameManager.Instance.CanSpendMana(cardData.manaCost))
@@ -85,21 +89,17 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         DeckManager.Instance.PlayCard(transform);
         
         cardState = CardState.OnTable;
-        enabled = false;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Vector3 scale = initialScale;
-        Vector3 move = new Vector3(0, 100, 0);
-        transform.DOScale(scale * 1.1f, 0.1f);
-        transform.DOLocalMove(initialPosition + move, 0.1f);
+        if (cardState == CardState.OnTable || IsDraggingCard || cardState == CardState.Discarded) return;
+        cardVisual.SetHoverEffect();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        transform.DOScale(initialScale, 0.1f);
-        if(cardState == CardState.Dragging) return;
-        transform.DOLocalMove(initialPosition, 0.25f);
+        if (cardState == CardState.OnTable || IsDraggingCard || cardState == CardState.Discarded) return;
+        cardVisual.ResetHoverEffect();
     }
 }
