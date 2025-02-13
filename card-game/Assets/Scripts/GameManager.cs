@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     private int playerTurn = 1;
     public int currentMana { get; private set; }
     public int maxMana { get; private set; }
+    public bool isActionsEnabled = true;
     
     public TextMeshProUGUI manaText;
     public TextMeshProUGUI turnText;

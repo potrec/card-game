@@ -1218,13 +1218,13 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 582337831}
-  - {fileID: 981031888}
   - {fileID: 1687841108}
   - {fileID: 1006088400}
   - {fileID: 1458166377}
   - {fileID: 1563170351}
   - {fileID: 1407428394}
+  - {fileID: 582337831}
+  - {fileID: 981031888}
   - {fileID: 5753066383018863379}
   - {fileID: 1152745942}
   m_Father: {fileID: 1345282078}
@@ -3891,6 +3891,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a4177cd55b880649bde528a9b02aa52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActionsEnabled: 1
   manaText: {fileID: 563925368}
   turnText: {fileID: 2140046650}
 --- !u!1 &1639001968

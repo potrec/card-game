@@ -12,6 +12,7 @@ public class HandReorderUI : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
+        if(!GameManager.Instance.isActionsEnabled) return;
         UpdateHandCardOrderInDeckManager(eventData);
     }
     

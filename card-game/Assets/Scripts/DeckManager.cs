@@ -53,11 +53,11 @@ public class DeckManager : MonoBehaviour
     public void DrawInitialHand()
     {
         StartCoroutine(DrawCards(startingHandDeckSize));
-        
     }
     
     IEnumerator DrawCards(int amount)
     {
+        GameManager.Instance.isActionsEnabled = false;
         DisableCardInteractions(handCards);
         for (int i = 0; i < amount; i++)
         {
@@ -66,6 +66,7 @@ public class DeckManager : MonoBehaviour
         }
         yield return new WaitForSeconds(1f);
         EnableCardInteractions(handCards, BasicCard.CardState.InHand);
+        GameManager.Instance.isActionsEnabled = true;
     }
 
     public void DrawCard()
