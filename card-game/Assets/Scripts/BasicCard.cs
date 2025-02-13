@@ -10,13 +10,14 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         InHand,
         Dragging,
         OnTable,
-        Discarded
+        Discarded,
+        Drawn
     }
     
     public static bool IsDraggingCard { get; private set; }
     
     public CardSO cardData;
-    public CardState cardState = CardState.InHand;
+    public CardState cardState = CardState.Drawn;
     public BasicCardVisual cardVisual;
     [HideInInspector] public Vector3 initialPosition;
     
@@ -55,7 +56,7 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     
     public void OnDrag(PointerEventData eventData)
     {
-        if (cardState == CardState.OnTable || cardState == CardState.Discarded) return;
+        if (cardState == CardState.OnTable || cardState == CardState.Discarded || cardState == CardState.Drawn) return;
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = 1f;
         transform.position = mousePos;
@@ -63,7 +64,7 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (cardState == CardState.OnTable || cardState == CardState.Discarded) return;
+        if (cardState == CardState.OnTable || cardState == CardState.Discarded || cardState == CardState.Drawn) return;
         canvasGroup.blocksRaycasts = true;
         IsDraggingCard = false;
         if(eventData.pointerCurrentRaycast.gameObject != null && eventData.pointerCurrentRaycast.gameObject.GetComponent<DropZone>() != null)
@@ -98,13 +99,13 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (cardState == CardState.OnTable || IsDraggingCard || cardState == CardState.Discarded) return;
+        if (cardState == CardState.OnTable || IsDraggingCard || cardState == CardState.Discarded || cardState == CardState.Drawn) return;
         cardVisual.SetHoverEffect();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (cardState == CardState.OnTable || IsDraggingCard || cardState == CardState.Discarded) return;
+        if (cardState == CardState.OnTable || IsDraggingCard || cardState == CardState.Discarded || cardState == CardState.Drawn) return;
         cardVisual.ResetHoverEffect();
     }
 }

@@ -88,7 +88,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308d44e2fcee4bbabb5ec398d8be4882, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &7448707712741842747
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,8 +149,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardData: {fileID: 0}
-  cardState: 0
+  cardState: 4
   cardVisual: {fileID: 4339134627727336430}
+  initialPosition: {x: 0, y: 0, z: 0}
 --- !u!225 &4195073766636656268
 CanvasGroup:
   m_ObjectHideFlags: 0

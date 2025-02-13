@@ -1,7 +1,6 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 using DG.Tweening;
 
 public class DeckManager : MonoBehaviour
@@ -20,8 +19,13 @@ public class DeckManager : MonoBehaviour
     public Transform basicCardPrefab;
     public Transform tableUI;
     public Transform handUI;
+    public Transform deckCardsPoint;
+    public Transform discardPilePoint;
 
     public List<DeckSO.DeckCards> deckCards;
+    
+    public float cardDrawTime = 0.5f;
+    public float cardAnimationTimeDraw = 0.5f;
 
     private void Awake()
     {
@@ -48,14 +52,15 @@ public class DeckManager : MonoBehaviour
 
     public void DrawInitialHand()
     {
-        DrawCards(startingHandDeckSize);
+        StartCoroutine(DrawCards(startingHandDeckSize));
     }
     
-    public void DrawCards(int amount)
+    IEnumerator DrawCards(int amount)
     {
         for (int i = 0; i < amount; i++)
         {
             DrawCard();
+            yield return new WaitForSeconds(cardDrawTime);
         }
     }
 
@@ -71,8 +76,9 @@ public class DeckManager : MonoBehaviour
             deckCards.RemoveAt(randomCardIndex);
         }
         
-        var card = InstantiateCard(cardData, handUI);
+        var card = InstantiateCard(cardData, deckCardsPoint);
         handCards.Add(card);
+        StartCoroutine(CardDrawAnimationCoroutine(card));
     }
     
     private Transform InstantiateCard(CardSO cardData, Transform parent)
@@ -118,7 +124,26 @@ public class DeckManager : MonoBehaviour
             Destroy(child.gameObject);
         }
         
-        DrawCards(startingHandDeckSize-handCards.Count);
+        StartCoroutine(DrawCards(startingHandDeckSize-handCards.Count));
+        UpdateHandCards();
+    }
+
+    IEnumerator CardDrawAnimationCoroutine(Transform card)
+    {
+        BasicCard basicCard = card.GetComponent<BasicCard>();
+        basicCard.cardState = BasicCard.CardState.Drawn;
+        
+        Vector3 targetScale = Vector3.one;
+        
+        card.localScale = Vector3.zero;
+        Tween scaleTween = card.DOScale(targetScale, cardAnimationTimeDraw).SetEase(Ease.InSine);
+        
+        yield return scaleTween.WaitForCompletion();
+        Tween moveTween = card.DOMove(handUI.position, cardAnimationTimeDraw).SetEase(Ease.InSine);
+        yield return moveTween.WaitForCompletion();
+        card.SetParent(handUI);
+        basicCard.cardState = BasicCard.CardState.InHand;
+
         UpdateHandCards();
     }
 }
