@@ -24,7 +24,7 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     private CanvasGroup canvasGroup;
     private Vector3 initialScale;
     private RectTransform rectTransform;
-
+    
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
@@ -58,14 +58,15 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         cardState = CardState.Dragging;
         canvasGroup.blocksRaycasts = false;
         IsDraggingCard = true;
+
+        cardVisual.CloneVisual();
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         if (!IsCardInteractive() && cardState != CardState.Dragging) return;
-        Vector3 mousePos = Input.mousePosition;
-        mousePos.z = 1f;
-        transform.position = mousePos;
+        transform.position = Input.mousePosition;
+        if(cardVisual.clone != null) cardVisual.clone.transform.position = Input.mousePosition;
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -73,6 +74,9 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         if (!IsCardInteractive() && cardState != CardState.Dragging) return;
         canvasGroup.blocksRaycasts = true;
         IsDraggingCard = false;
+
+        cardVisual.DeleteCloneVisual();
+
         if (eventData.pointerCurrentRaycast.gameObject != null && eventData.pointerCurrentRaycast.gameObject.GetComponent<DropZone>() != null)
         {
             if (GameManager.Instance.CanSpendMana(cardData.manaCost))
@@ -93,7 +97,6 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public void PlayCard()
     {
         GameManager.Instance.SpendMana(cardData.manaCost);
-        DeckManager.Instance.UpdateHandCards();
         DeckManager.Instance.PlayCard(transform);
         cardState = CardState.OnTable;
     }
