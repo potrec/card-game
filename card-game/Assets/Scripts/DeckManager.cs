@@ -64,6 +64,7 @@ public class DeckManager : MonoBehaviour
             DrawCard();
             yield return new WaitForSeconds(cardDrawTime);
         }
+        yield return new WaitForSeconds(1f);
         EnableCardInteractions(handCards, BasicCard.CardState.InHand);
     }
 

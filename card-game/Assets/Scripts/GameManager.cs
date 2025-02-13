@@ -18,8 +18,7 @@ public class GameManager : MonoBehaviour
     
     public void Start()
     {
-        maxMana = 1;
-        currentMana = maxMana;
+        InitializeMana();
         turnText.text = $"{playerTurn}";
         SetManaText();
     }
@@ -31,6 +30,12 @@ public class GameManager : MonoBehaviour
             return true;
         }
         return false;
+    }
+    
+    private void InitializeMana()
+    {
+        maxMana = 1;
+        currentMana = maxMana;
     }
     
     public void SpendMana(int manaCost)
