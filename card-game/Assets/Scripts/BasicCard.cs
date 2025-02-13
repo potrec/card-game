@@ -11,7 +11,8 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         Dragging,
         OnTable,
         Discarded,
-        Drawn
+        Drawn,
+        Disabled
     }
     
     public static bool IsDraggingCard { get; private set; }
@@ -48,7 +49,7 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (cardState == CardState.OnTable || cardState == CardState.Discarded) return;
+        if (cardState == CardState.OnTable || cardState == CardState.Discarded || cardState == CardState.Disabled) return;
         cardState = CardState.Dragging;
         canvasGroup.blocksRaycasts = false;
         IsDraggingCard = true;
@@ -56,7 +57,7 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     
     public void OnDrag(PointerEventData eventData)
     {
-        if (cardState == CardState.OnTable || cardState == CardState.Discarded || cardState == CardState.Drawn) return;
+        if (cardState == CardState.OnTable || cardState == CardState.Discarded || cardState == CardState.Drawn || cardState == CardState.Disabled) return;
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = 1f;
         transform.position = mousePos;
@@ -64,25 +65,22 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (cardState == CardState.OnTable || cardState == CardState.Discarded || cardState == CardState.Drawn) return;
+        if (cardState == CardState.OnTable || cardState == CardState.Discarded || cardState == CardState.Drawn || cardState == CardState.Disabled) return;
         canvasGroup.blocksRaycasts = true;
         IsDraggingCard = false;
         if(eventData.pointerCurrentRaycast.gameObject != null && eventData.pointerCurrentRaycast.gameObject.GetComponent<DropZone>() != null)
         {
             if (GameManager.Instance.CanSpendMana(cardData.manaCost))
             {
-                Debug.Log($"Card {cardData.name} played");
                 PlayCard();
             }
             else
             {
-                Debug.Log($"Card {cardData.name} played but not enough mana");
                 cardState = CardState.InHand;
             }
         }
         else
         {
-            Debug.Log($"Card {cardData.name} returned to hand");
             cardState = CardState.InHand;
         }
     }
@@ -99,13 +97,13 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (cardState == CardState.OnTable || IsDraggingCard || cardState == CardState.Discarded || cardState == CardState.Drawn) return;
+        if (cardState == CardState.OnTable || IsDraggingCard || cardState == CardState.Discarded || cardState == CardState.Drawn || cardState == CardState.Disabled) return;
         cardVisual.SetHoverEffect();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (cardState == CardState.OnTable || IsDraggingCard || cardState == CardState.Discarded || cardState == CardState.Drawn) return;
+        if (cardState == CardState.OnTable || IsDraggingCard || cardState == CardState.Discarded || cardState == CardState.Drawn || cardState == CardState.Disabled) return;
         cardVisual.ResetHoverEffect();
     }
 }

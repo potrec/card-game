@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class BasicCardVisual : MonoBehaviour
 {
     private RectTransform rectTransform;
-    private Vector3 initialScale;
+    public Vector3 initialScale;
     private BasicCard card;
     
     private const float HoverScaleFactor = 1.1f;

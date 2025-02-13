@@ -53,22 +53,25 @@ public class DeckManager : MonoBehaviour
     public void DrawInitialHand()
     {
         StartCoroutine(DrawCards(startingHandDeckSize));
+        
     }
     
     IEnumerator DrawCards(int amount)
     {
+        DisableCardInteractions(handCards);
         for (int i = 0; i < amount; i++)
         {
             DrawCard();
             yield return new WaitForSeconds(cardDrawTime);
         }
+        EnableCardInteractions(handCards, BasicCard.CardState.InHand);
     }
 
     public void DrawCard()
     {
         if (deckCards.Count == 0) return;
         
-        int randomCardIndex = UnityEngine.Random.Range(0, deckCards.Count);
+        int randomCardIndex = Random.Range(0, deckCards.Count);
         var cardData = deckCards[randomCardIndex].card;
         deckCards[randomCardIndex].amount--;
         if (deckCards[randomCardIndex].amount == 0)
@@ -94,7 +97,6 @@ public class DeckManager : MonoBehaviour
 
     public void UpdateHandCards()
     {
-        Debug.Log("Updating hand cards");
         foreach (Transform child in handUI)
         {
             var card = child.GetComponent<BasicCard>();
@@ -116,22 +118,17 @@ public class DeckManager : MonoBehaviour
     
     public void EndTurn()
     {
-        discardPile.AddRange(tableCards.ConvertAll(c => c.GetComponent<BasicCard>().cardData));
-        tableCards.Clear();
-
-        foreach (Transform child in tableUI)
+        foreach (var card in tableCards)
         {
-            Destroy(child.gameObject);
+            StartCoroutine(CardDiscardAnimationCoroutine(card));
         }
-        
         StartCoroutine(DrawCards(startingHandDeckSize-handCards.Count));
-        UpdateHandCards();
     }
 
     IEnumerator CardDrawAnimationCoroutine(Transform card)
     {
         BasicCard basicCard = card.GetComponent<BasicCard>();
-        basicCard.cardState = BasicCard.CardState.Drawn;
+        basicCard.cardState = BasicCard.CardState.Disabled;
         
         Vector3 targetScale = Vector3.one;
         
@@ -142,8 +139,35 @@ public class DeckManager : MonoBehaviour
         Tween moveTween = card.DOMove(handUI.position, cardAnimationTimeDraw).SetEase(Ease.InSine);
         yield return moveTween.WaitForCompletion();
         card.SetParent(handUI);
-        basicCard.cardState = BasicCard.CardState.InHand;
 
         UpdateHandCards();
+    }
+    
+    IEnumerator CardDiscardAnimationCoroutine(Transform card)
+    {
+        BasicCard basicCard = card.GetComponent<BasicCard>();
+        basicCard.cardState = BasicCard.CardState.Discarded;
+
+        basicCard.cardVisual.transform.DOScale(basicCard.cardVisual.initialScale, cardAnimationTimeDraw);
+        Tween moveTween = card.DOMove(discardPilePoint.position, cardAnimationTimeDraw).SetEase(Ease.InSine);
+        yield return moveTween.WaitForCompletion();
+        card.SetParent(discardPilePoint);
+        discardPile.Add(basicCard.cardData);
+    }
+    
+    public void DisableCardInteractions(List<Transform> cardList)
+    {
+        foreach (var card in cardList)
+        {
+            card.GetComponent<BasicCard>().cardState = BasicCard.CardState.Disabled;
+        }
+    }
+    
+    public void EnableCardInteractions(List<Transform> cardList, BasicCard.CardState cardState)
+    {
+        foreach (var card in cardList)
+        {
+            card.GetComponent<BasicCard>().cardState = cardState;
+        }
     }
 }

@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardData: {fileID: 0}
-  cardState: 4
+  cardState: 5
   cardVisual: {fileID: 4339134627727336430}
   initialPosition: {x: 0, y: 0, z: 0}
 --- !u!225 &4195073766636656268
