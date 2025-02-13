@@ -52,7 +52,12 @@ public class HandReorderUI : MonoBehaviour, IDropHandler
         }
 
         int index = DeckManager.Instance.handCards.IndexOf(cardInHandList);
-
+        CardPosition closestCard = cardPositions.OrderBy(c => c.distanceFromDropPosition).First();
+        if (closestCard.card == cardInHandList)
+        {
+            return;
+        }
+        DeckManager.Instance.handCards.RemoveAt(index);
         if (isAllCardsOnTheLeft)
         {
             DeckManager.Instance.handCards.Insert(0, cardInHandList);
@@ -63,11 +68,10 @@ public class HandReorderUI : MonoBehaviour, IDropHandler
         }
         else
         {
-            CardPosition closestCard = cardPositions.OrderBy(c => c.distanceFromDropPosition).First();
             int closestCardIndex = DeckManager.Instance.handCards.IndexOf(closestCard.card);
-            DeckManager.Instance.handCards.Insert(closestCard.isOnLeftOfDropPosition ? closestCardIndex : closestCardIndex + 1, cardInHandList);
+            int insertIndex = closestCard.isOnLeftOfDropPosition ? closestCardIndex : closestCardIndex + 1;
+            DeckManager.Instance.handCards.Insert(insertIndex, cardInHandList);
         }
-        DeckManager.Instance.handCards.RemoveAt(index);
         gridLayoutGroup.transform.DetachChildren();
         foreach (var card in DeckManager.Instance.handCards)
         {

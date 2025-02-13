@@ -124,6 +124,7 @@ public class DeckManager : MonoBehaviour
         {
             StartCoroutine(CardDiscardAnimationCoroutine(card));
         }
+        tableCards.Clear();
         StartCoroutine(DrawCards(startingHandDeckSize-handCards.Count));
     }
 

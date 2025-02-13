@@ -99,6 +99,7 @@ public class BasicCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         GameManager.Instance.SpendMana(cardData.manaCost);
         DeckManager.Instance.PlayCard(transform);
         cardState = CardState.OnTable;
+        DeckManager.Instance.UpdateHandCards();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
