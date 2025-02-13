@@ -52,7 +52,6 @@ public class HandReorderUI : MonoBehaviour, IDropHandler
         }
 
         int index = DeckManager.Instance.handCards.IndexOf(cardInHandList);
-        DeckManager.Instance.handCards.RemoveAt(index);
 
         if (isAllCardsOnTheLeft)
         {
@@ -68,7 +67,7 @@ public class HandReorderUI : MonoBehaviour, IDropHandler
             int closestCardIndex = DeckManager.Instance.handCards.IndexOf(closestCard.card);
             DeckManager.Instance.handCards.Insert(closestCard.isOnLeftOfDropPosition ? closestCardIndex : closestCardIndex + 1, cardInHandList);
         }
-
+        DeckManager.Instance.handCards.RemoveAt(index);
         gridLayoutGroup.transform.DetachChildren();
         foreach (var card in DeckManager.Instance.handCards)
         {
