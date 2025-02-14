@@ -48,17 +48,15 @@ public class BasicCardVisual : MonoBehaviour
     {
         clone = new GameObject("CardClone");
         clone.transform.position = transform.position;
-        
         RectTransform cloneRectTransform = clone.AddComponent<RectTransform>();
         cloneRectTransform.sizeDelta = card.GetComponent<RectTransform>().sizeDelta;
-        cloneRectTransform.localScale = transform.parent.localScale;
-        
         Image cloneImage = clone.AddComponent<Image>();
         cloneImage.sprite = cardImage.sprite;
         cloneImage.raycastTarget = false;
         
-        clone.transform.SetParent(DeckManager.Instance.deckCardsPoint);
+        clone.transform.SetParent(DeckManager.Instance.deckCardsPoint.parent);
         clone.transform.SetAsLastSibling();
+        clone.transform.localScale = initialScale*HoverScaleFactor;
     }
 
     public void DeleteCloneVisual()

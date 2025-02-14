@@ -60,4 +60,9 @@ public class GameManager : MonoBehaviour
     {
         manaText.text = currentMana + "/" + maxMana;
     }
+    
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }

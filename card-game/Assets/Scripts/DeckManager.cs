@@ -107,7 +107,7 @@ public class DeckManager : MonoBehaviour
             var card = child.GetComponent<BasicCard>();
             if (card == null)
             {
-                Destroy(child.gameObject); // Ensure to destroy GameObject to remove from scene
+                Destroy(child.gameObject);
                 continue;
             }
             card.UpdateInitialTransform();
@@ -151,13 +151,14 @@ public class DeckManager : MonoBehaviour
 
     IEnumerator CardDiscardAnimationCoroutine(Transform card)
     {
+        card.SetParent(discardPilePoint);
+        card.SetAsLastSibling();
         BasicCard basicCard = card.GetComponent<BasicCard>();
         basicCard.cardState = BasicCard.CardState.Discarded;
 
         basicCard.cardVisual.transform.DOScale(basicCard.cardVisual.initialScale, cardAnimationTimeDraw);
         Tween moveTween = card.DOMove(discardPilePoint.position, cardAnimationTimeDraw).SetEase(Ease.InSine);
         yield return moveTween.WaitForCompletion();
-        card.SetParent(discardPilePoint);
         discardPile.Add(basicCard.cardData);
     }
 
