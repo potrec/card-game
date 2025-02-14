@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
     public void EndTurn()
     {
         playerTurn += 1;
-        turnText.text = $"{playerTurn}";
+        turnText.text = $"Turn {playerTurn}";
         maxMana = maxMana < 10 ? maxMana + 1 : 10;
         currentMana = maxMana;
         DeckManager.Instance.EndTurn();

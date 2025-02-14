@@ -14,8 +14,6 @@ public class DeckManager : MonoBehaviour
     public List<Transform> tableCards = new List<Transform>();
     public List<CardSO> discardPile = new List<CardSO>();
     
-    public CardSO currentCard { get; set; } = null;
-    
     public Transform basicCardPrefab;
     public Transform tableUI;
     public Transform handUI;

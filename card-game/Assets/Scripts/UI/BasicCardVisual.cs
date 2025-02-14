@@ -14,6 +14,7 @@ public class BasicCardVisual : MonoBehaviour
     private const float HoverAnimationDuration = 0.1f;
     private const float HoverMoveUpDistance = 100f;
     private const float ExitHoverAnimationDuration = 0.25f;
+    private const float MoveToTableAnimationDuration = 0.5f;
 
     private Image cardImage;
 
@@ -32,15 +33,14 @@ public class BasicCardVisual : MonoBehaviour
 
     public void SetHoverEffect()
     {
-        Vector3 scale = initialScale;
         Vector3 move = new Vector3(0, HoverMoveUpDistance, 0);
-        transform.DOScale(scale * HoverScaleFactor, HoverAnimationDuration);
+        transform.parent.DOScale(initialScale * HoverScaleFactor, HoverAnimationDuration);
         transform.parent.DOLocalMove(card.initialPosition + move, HoverAnimationDuration);
     }
 
     public void ResetHoverEffect()
     {
-        transform.DOScale(initialScale, ExitHoverAnimationDuration);
+        transform.parent.DOScale(initialScale, ExitHoverAnimationDuration);
         transform.parent.DOLocalMove(card.initialPosition, ExitHoverAnimationDuration);
     }
 
@@ -51,7 +51,7 @@ public class BasicCardVisual : MonoBehaviour
         
         RectTransform cloneRectTransform = clone.AddComponent<RectTransform>();
         cloneRectTransform.sizeDelta = card.GetComponent<RectTransform>().sizeDelta;
-        cloneRectTransform.localScale = transform.localScale;
+        cloneRectTransform.localScale = transform.parent.localScale;
         
         Image cloneImage = clone.AddComponent<Image>();
         cloneImage.sprite = cardImage.sprite;
@@ -65,5 +65,16 @@ public class BasicCardVisual : MonoBehaviour
     {
         if(clone != null) Destroy(clone);
         clone = null;
+    }
+    
+    public void PlayCardAnimation()
+    {
+        card.cardState = BasicCard.CardState.OnTable;
+        transform.parent.DOScale(initialScale, MoveToTableAnimationDuration);
+        transform.parent.DOMove(DeckManager.Instance.tableUI.position, MoveToTableAnimationDuration).OnComplete(() =>
+        {
+            DeckManager.Instance.PlayCard(transform.parent);
+            DeckManager.Instance.UpdateHandCards();
+        });
     }
 }
